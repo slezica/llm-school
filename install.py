@@ -10,10 +10,12 @@ import re
 import yaml
 import shutil
 import argparse
+import time
 from glob import glob
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound, pass_context
 
+# --------------------------------------------------------------------------------------------------
 
 # Define roots:
 home = Path.home()
@@ -23,6 +25,8 @@ qwen = Path(home, '.qwen')
 claude = Path(home, '.claude')
 opencode = Path(home, '.config/opencode')
 
+
+# --------------------------------------------------------------------------------------------------
 
 # Collect guides:
 guides = {}
@@ -37,15 +41,28 @@ for path in here.glob('guides/*.md'):
     guides[guide['name']] = guide
 
 
+# --------------------------------------------------------------------------------------------------
+
 # Prepare templating:
 env = Environment(loader=FileSystemLoader(str(here)))
 
 def render(src: Path, dst_root: Path, dst_rel: Path):
+    now = round(time.time() * 1000)
     src = src.relative_to(here)
     dst = dst_root / dst_rel
 
     content = env.get_template(str(src)).render(root = dst_root, guides = guides)
 
+    # Save backup for existing files (if changed):
+    if dst.exists():
+        old_content = dst.read_text()
+
+        if content != old_content:
+            bak = Path(dst_root, 'backup', str(dst_rel) + f".{now}")
+            bak.parent.mkdir(parents=True, exist_ok=True)
+            bak.write_text(dst.read_text())
+
+    # Replace file:
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(content)
 
@@ -61,6 +78,8 @@ env.globals['ref'] = ref
 env.globals['embed'] = embed
 
 
+# --------------------------------------------------------------------------------------------------
+
 # Parse command line arguments:
 parser = argparse.ArgumentParser(description='Install LLM School resources to AI agent configuration directories')
 parser.add_argument('--install-claude', action='store_true', help='Install to Claude Code')
@@ -71,6 +90,9 @@ args = parser.parse_args()
 # Require at least one flag
 if not (args.install_claude or args.install_qwen or args.install_opencode):
     parser.error('At least one installation flag must be provided: --install-claude, --install-qwen, or --install-opencode')
+
+
+# --------------------------------------------------------------------------------------------------
 
 # Install to Qwen:
 if args.install_qwen:

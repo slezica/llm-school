@@ -18,8 +18,8 @@ uv run --script install.py [flags]
 
 Pass `--install-claude`, `--install-qwen` and/or `--install-opencode`.
 
-**Warning**: existing files will be replaced.
-
+> [!NOTE]
+> When replacing files, a backup will be saved to `<config>/backup` under the same relative path.
 
 ## Usage
 
