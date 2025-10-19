@@ -9,6 +9,7 @@
 import re
 import yaml
 import shutil
+import argparse
 from glob import glob
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound, pass_context
@@ -60,21 +61,32 @@ env.globals['ref'] = ref
 env.globals['embed'] = embed
 
 
-# Render prompt:
-path = Path(here, 'PROMPT.md')
-render(path, qwen, Path('QWEN.md'))
-render(path, claude, Path('CLAUDE.md'))
-render(path, opencode, Path('AGENTS.md'))
+# Parse command line arguments:
+parser = argparse.ArgumentParser(description='Install LLM School resources to AI agent configuration directories')
+parser.add_argument('--install-claude', action='store_true', help='Install to Claude Code')
+parser.add_argument('--install-qwen', action='store_true', help='Install to Qwen Code')
+parser.add_argument('--install-opencode', action='store_true', help='Install to OpenCode')
+args = parser.parse_args()
 
-# Render agents:
-for path in here.glob('agents/*.md'):
-    render(path, qwen, Path('agents', path.name))
-    render(path, claude, Path('agents', path.name))
-    render(path, opencode, Path('agent', path.name))
+# Require at least one flag
+if not (args.install_claude or args.install_qwen or args.install_opencode):
+    parser.error('At least one installation flag must be provided: --install-claude, --install-qwen, or --install-opencode')
 
-# Render guides:
-for path in here.glob('guides/*.md'):
-    render(path, qwen, Path('guides', path.name))
-    render(path, claude, Path('guides', path.name))
-    render(path, opencode, Path('guides', path.name))
+# Install to Qwen:
+if args.install_qwen:
+    render(Path(here, 'PROMPT.md'), qwen, Path('QWEN.md'))
+    for path in here.glob('agents/*.md'): render(path, qwen, Path('agents', path.name))
+    for path in here.glob('guides/*.md'): render(path, qwen, Path('guides', path.name))
+
+# Install to Claude:
+if args.install_claude:
+    render(Path(here, 'PROMPT.md'), claude, Path('CLAUDE.md'))
+    for path in here.glob('agents/*.md'): render(path, claude, Path('agents', path.name))
+    for path in here.glob('guides/*.md'): render(path, claude, Path('guides', path.name))
+
+# Install to OpenCode:
+if args.install_opencode:
+    render(Path(here, 'PROMPT.md'), opencode, Path('AGENTS.md'))
+    for path in here.glob('agents/*.md'): render(path, opencode, Path('agent', path.name))
+    for path in here.glob('guides/*.md'): render(path, opencode, Path('guides', path.name))
 
