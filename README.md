@@ -16,7 +16,7 @@ Render templates and install for one or more AI coding assistants using the `ins
 uv run --script install.py [flags] 
 ```
 
-Pass `--install-claude`, `--install-qwen` and/or `--install-opencode`.
+Pass `--claude`, `--qwen` and/or `--opencode`.
 
 > [!NOTE]
 > When replacing files, a backup will be saved to `<config>/backup` under the same relative path.
