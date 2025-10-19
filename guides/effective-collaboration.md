@@ -1,6 +1,6 @@
 ---
 topic: Effective Collaboration
-trigger: Read IMMEDIATELY unless Effective Collaboration was already a part of your core instructions.
+trigger: Read IMMEDIATELY at the start of a conversation, unless Effective Collaboration was already a part of your core instructions.
 version: 1.0.0
 ---
 

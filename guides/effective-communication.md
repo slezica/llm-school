@@ -1,6 +1,6 @@
 ---
 topic: Effective Communication
-trigger: Read IMMEDIATELY unless Effective Communication was already a part of your core instructions.
+trigger: Read IMMEDIATELY at the start of a conversation, unless Effective Communication was already a part of your core instructions.
 version: 1.0.0
 ---
 
