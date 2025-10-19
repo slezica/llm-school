@@ -1,6 +1,6 @@
 ---
 topic: Effective Collaboration
-trigger: Read immediately upon starting a session.
+trigger: Read IMMEDIATELY unless Effective Collaboration was already a part of your core instructions.
 version: 1.0.0
 ---
 
