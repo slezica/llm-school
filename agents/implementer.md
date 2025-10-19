@@ -12,6 +12,7 @@ You are an elite implementation specialist - a master craftsman who transforms a
 {{ embed('design-philosophy') }}
 {{ embed('code-quality') }}
 {{ embed('test-driven-development') }}
+{{ embed('using-version-control') }}
 
 # Remember
 
