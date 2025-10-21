@@ -13,81 +13,104 @@ Pay close attention. These are the core principles of writing quality code.
 3. **Self-evidence**: names should immediately reveal the nature of the thing.
 4. **Clarity**: prefer obvious code over clever code, even if it's longer.
 5. **Observability**: add logs, metrics and traces to quickly spot what, where and how things break.
-6. **Focus**: work only on the task at hand, don't start adding or changing unrelated behavior.
-7. **Testing**: add tests as you add behavior to ensure correctness and detect regressions.
-8. **Uniqueness**: avoid conceptual and textual duplication so that things exist in only one place.
-
+6. **Testing**: add tests as you add behavior to ensure correctness and detect regressions.
+7. **Annotation**: add strategic comments to complement code without cluttering or being redundant.
+8. **Versioning**: use `git` to commit atomic implementation steps and semantically related changes.
 
 ## Examples
 
+
 ### Simplicity
-
-Bad:
-```python
-def process(user, action):
-    if user and user.is_active and not user.is_banned and user.has_permission(action) and (user.subscription_tier == 'premium' or user.trial_active) and datetime.now() < user.expiry_date:
-        return execute_action(action)
-    return None
-```
-
-Good:
-```python
-def can_perform_action(user, action):
-    """Check if user has authorization to perform action."""
-    if not user or not user.is_active or user.is_banned:
-        return False
-    if not user.has_permission(action):
-        return False
-    if datetime.now() >= user.expiry_date:
-        return False
-    return user.subscription_tier == 'premium' or user.trial_active
-
-def process(user, action):
-    if can_perform_action(user, action):
-        return execute_action(action)
-    return None
-```
-
-
-### Readability
 
 Bad:
 ```javascript
 function processOrders(orders) {
     const results = []
+
     for (let i = 0; i < orders.length; i++) {
+        // Calculate a bunch of stuff with magic numbers and complex logic:
         const order = orders[i]
         const total = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
         const tax = total * 0.08
         const shipping = total > 50 ? 0 : 5.99
         const final = total + tax + shipping
         results.push({id: order.id, total: final})
+
+        // Also emit notifications:
+        notificationService.notify(order)
+
+        // Also save to the database:
+        order.setHandled(true)
+        order.save()
     }
+
     return results
 }
 ```
 
 Good:
 ```javascript
-function processOrders(orders) {
+function processOrders(orders, context) {
     const results = []
 
-    for (let i = 0; i < orders.length; i++) {
-        const order = orders[i]
+    for (let order of orders) {
+        const totals = calculateTotals(order, context)
+        results.push({ order, totals })
 
-        const subtotal = order.items.reduce((sum, item) =>
-            sum + item.price * item.quantity, 0
-        )
-
-        const tax = subtotal * 0.08
-        const shipping = subtotal > 50 ? 0 : 5.99
-        const total = subtotal + tax + shipping
-
-        results.push({ id: order.id, total })
+        notifyBuyers(order, context)
     }
 
     return results
 }
+
+function calculateTotals(order, context) {
+    let subtotal = 0
+    for (let item of order.items) {
+        subtotal += item.price * item.quantity
+    }
+
+    const tax = subtotal * context.taxRate
+    const shipping = (subtotal > context.minFreeShippingPrice) ? 0 : context.baseShippingPrice
+    const total = subtotal + tax + shipping
+
+    return { subtotal, tax, shipping, total }
+}
+
+function notifyBuyers(order, context) {
+    context.notificationService.notify(order)
+}
+```
+
+
+### Readability
+
+Bad:
+```python
+def process(user, action):
+    if user and user.is_active and not user.is_banned and user.has_permission(action) and (user.subscription_tier == 'premium' or user.trial_active) and datetime.now() < user.expiry_date:
+        action.execute()
+```
+
+Good:
+```python
+def can_execute_action(user, action):
+    if not user or not user.is_active or user.is_banned:
+        return False
+
+    if not user.has_permission(action):
+        return False
+
+    if datetime.now() >= user.expiry_date:
+        return False
+
+    else:
+        return user.subscription_tier == 'premium' or user.trial_active
+
+def process(user, action):
+    if can_execute_action(user, action):
+        action.execute()
+
+    return None
 ```
 
 
@@ -121,22 +144,20 @@ def calculate_discounted_amount(user, amount):
 
 Bad:
 ```javascript
-// Clever: use bitwise XOR to swap without temp variable
-function swap(arr, i, j) {
-    arr[i] ^= arr[j]
-    arr[j] ^= arr[i]
-    arr[i] ^= arr[j]
-}
+return groups.reduce((arr, max) => arr.map(u => calculateAge(u)).some(a => a > max))
 ```
 
 Good:
 ```javascript
-// Obvious: use standard swap with temporary variable
-function swap(arr, i, j) {
-    const temp = arr[i]
-    arr[i] = arr[j]
-    arr[j] = temp
+for (let group of groups) {
+    for (let member of group) {
+        if (calculateAge(member) > max) {
+            return true
+        }
+    }
 }
+
+return false
 ```
 
 
@@ -171,11 +192,14 @@ def process_payment(order):
     except PaymentError as e:
         order.status = 'failed'
 
-        logger.error(f"Payment failed for order {order.id}: {e.message}",
-                    extra={'order_id': order.id, 'error_code': e.code})
+        logger.error( f"Payment failed for order {order.id}: {e.message}", extra={
+            'order_id': order.id,
+            'reason': e.code,
+        })
+
         metrics.increment('payments.failure', tags={'reason': e.code})
 
-        return None
+        raise e # let caller decide
 ```
 
 
@@ -191,11 +215,11 @@ def calculate_order_total(order):
 
 ## Also added email notification while working on this
 def send_order_confirmation(order):
-    email.send(order.user.email, f"Order total: ${order.total}")
+    send_email(order.user, f"Order total: ${order.total}")
 
-## Also updated the user's last_order_date
-def update_user_activity(user):
-    user.last_order_date = datetime.now()
+## And for that also implemented sendEmail
+def send_email(user, subject):
+    ...
 ```
 
 Good:
@@ -218,7 +242,6 @@ Bad:
 ## Just implemented this new feature
 
 def apply_bulk_discount(items):
-    """Apply discount: 10% for 5+ items, 15% for 10+ items."""
     count = len(items)
     total = sum(item.price for item in items)
 
@@ -226,8 +249,8 @@ def apply_bulk_discount(items):
         return total * 0.85
     elif count >= 5:
         return total * 0.90
-
-    return total
+    else:
+        return total
 
 ## No tests written, will test manually later
 ```
@@ -237,7 +260,6 @@ Good:
 ## Just implemented this new feature
 
 def apply_bulk_discount(items):
-    """Apply discount: 10% for 5+ items, 15% for 10+ items."""
     count = len(items)
     total = sum(item.price for item in items)
 
@@ -245,8 +267,8 @@ def apply_bulk_discount(items):
         return total * 0.85
     elif count >= 5:
         return total * 0.90
-
-    return total
+    else:
+        return total
 
 
 ## Tests written alongside implementation
