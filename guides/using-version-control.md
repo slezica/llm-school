@@ -20,3 +20,19 @@ Good commit messages are one-liners with a concise description of the applied ch
 
 Follow the commit message style of the project so far, including use of verbs/nouns/adjectives/voice and things like prefix or tagging strategies. If unsure, check the latest in the git log to adapt.
 
+
+## Important: Using Git Commands
+
+- Call `git` commands on their own line, rather than chaining them by doing `other-command && git add` or `other-command && git commit`.
+
+Bad:
+```
+git add file && git commit -m "Add some file"
+```
+
+Good:
+```
+git add file
+git commit -m "Add some file"
+```
+
