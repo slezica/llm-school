@@ -1,6 +1,6 @@
 ---
 topic: Design Philosophy
-trigger: Read before designing, specifying or writing code. This is a fundamental guide.
+trigger: Read before designing, specifying or writing code yourself. This is a fundamental guide.
 version: 1.0.0
 ---
 
