@@ -14,8 +14,8 @@ Pay close attention. These are the core principles of writing quality code.
 4. **Clarity**: prefer obvious code over clever code, even if it's longer.
 5. **Observability**: add logs, metrics and traces to quickly spot what, where and how things break.
 6. **Testing**: add tests as you add behavior to ensure correctness and detect regressions.
-7. **Annotation**: add strategic comments to complement code without cluttering or being redundant.
-8. **Versioning**: use `git` to commit atomic implementation steps and semantically related changes.
+7. **Annotation**: add strategic comments and docstrings to complement code without cluttering or being redundant.
+8. **Versioning**: use `git` to commit implementation steps to individual parts with concise comments.
 
 ## Examples
 
@@ -203,38 +203,6 @@ def process_payment(order):
 ```
 
 
-### Focus
-
-Bad:
-```python
-## Task: Add method to calculate order total
-
-def calculate_order_total(order):
-    total = sum(item.price * item.quantity for item in order.items)
-    return total
-
-## Also added email notification while working on this
-def send_order_confirmation(order):
-    send_email(order.user, f"Order total: ${order.total}")
-
-## And for that also implemented sendEmail
-def send_email(user, subject):
-    ...
-```
-
-Good:
-```python
-## Task: Add method to calculate order total
-
-def calculate_order_total(order):
-    """Calculate total cost of all items in order."""
-    total = sum(item.price * item.quantity for item in order.items)
-    return total
-
-## Task completed
-```
-
-
 ### Testing
 
 Bad:
@@ -288,39 +256,55 @@ def test_apply_bulk_discount():
 ```
 
 
-### Uniqueness
+### Annotation
 
 Bad:
-```javascript
-function validateEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return regex.test(email)
-}
+```python
+def calculate_difference(x, y):
+    """Calculate the difference between x and y"
+    d = x - y # subtract y
 
-function validateUserEmail(user) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(user.email)
-}
+    # NOTE:
+    # Calculation involves subtraction
 
-function checkEmailFormat(address) {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return pattern.test(address)
-}
+    return d
 ```
 
 Good:
-```javascript
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function isValidEmail(email) {
-    return EMAIL_PATTERN.test(email)
-}
-
-function validateUser(user) {
-    return isValidEmail(user.email)
-}
-
-function checkEmailFormat(address) {
-    return isValidEmail(address)
-}
+```python
+def calculate_difference(x, y):
+    return = x - y # this will always be positive, since we know y < x
 ```
+
+
+### Versioning
+
+Bad commit log:
+```
+- Modified database, api and ui to add user stuff
+  Written by Claude
+
+- add missing api method
+```
+
+Good commit log:
+```
+- api: added api module with minimal code
+- api: implemented get_user endpoint
+- database: added User table
+- ui: added UserView component
+```
+
+
+## Detecting Bad Judgment
+
+Mistakes happen. The second best thing is to detect the symptoms and deduce their root causes, in order to prevent them or fix them.
+
+- Function does three unrelated things? Simplicity was broken.
+- Long nested conditional that's hard to parse? Readability was broken.
+- Variable named `x` or `tmp` with unclear purpose? Self-evidence was broken.
+- One-liner using obscure language features that confuses reviewers? Clarity was broken.
+- Production error with no context about what failed or why? Observability was broken.
+- Regression bug that wasn't caught because no tests exist? Testing was broken.
+- Cryptic code behavior with no explanation of the "why"? Annotation was broken.
+- Single massive commit mixing unrelated changes across multiple features? Versioning was broken.
