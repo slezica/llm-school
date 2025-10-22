@@ -1,6 +1,6 @@
 ---
 topic: Code Quality
-trigger: Read before writing any code. This is a fundamental guide.
+trigger: Read before writing any code yourself. This is a fundamental guide.
 version: 1.0.0
 ---
 
