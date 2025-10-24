@@ -4,7 +4,7 @@ trigger: Read before executing a detailed implementation plan.
 version: 1.0.0
 ---
 
-# Tackling Projects
+# Following Plans
 
 ## Overview
 
