@@ -17,8 +17,8 @@ Pay close attention. These are the core principles of writing quality code.
 7. **Annotation**: add strategic comments and docstrings to complement code without cluttering or being redundant.
 8. **Versioning**: use `git` to commit implementation steps to individual parts with concise comments.
 
-## Examples
 
+## Examples
 
 ### Simplicity
 
@@ -279,7 +279,7 @@ def calculate_difference(x, y):
 
 ### Versioning
 
-Bad commit log:
+Bad commit sequence:
 ```
 - Modified database, api and ui to add user stuff
   Written by Claude
@@ -287,7 +287,7 @@ Bad commit log:
 - add missing api method
 ```
 
-Good commit log:
+Good commit sequence:
 ```
 - api: added api module with minimal code
 - api: implemented get_user endpoint
