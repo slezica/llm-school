@@ -279,19 +279,24 @@ def calculate_difference(x, y):
 
 ### Versioning
 
-Bad commit sequence:
+Given previous message sequence:
 ```
-- Modified database, api and ui to add user stuff
+- database: added User table
+- api: added api module with minimal code
+```
+
+Bad following messages:
+```
+- Modified api and ui to add user stuff
   Written by Claude
 
-- add missing api method
+- add forgotten api method to get users
 ```
 
-Good commit sequence:
+Good followng messages:
 ```
-- api: added api module with minimal code
+- api: implemented create_user endpoint
 - api: implemented get_user endpoint
-- database: added User table
 - ui: added UserView component
 ```
 
