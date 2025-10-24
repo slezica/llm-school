@@ -19,6 +19,8 @@ The core philosophy of test-driven development is to write tests first, behavior
 
 Sometimes TDD isn't appropriate. This could be the case during exploratory work, prototyping, UI-heavy work that can't be tested automatically, etc. In these cases, change or adapt the approach as needed, including in your final report the decision you made and the rationale.
 
+You may be instructed to avoid TDD too. If so, prioritize your instructions.
+
 
 ## Reporting to Overseer
 
