@@ -276,6 +276,33 @@ def calculate_difference(x, y):
     return = x - y # this will always be positive, since we know y < x
 ```
 
+Bad:
+```python
+def calculate_effective_value(self, attribute_name: str) -> float:
+    """Calculate the effective value of an attribute with bonuses.
+
+    Args:
+        attribute_name: Name of the attribute to calculate
+
+    Returns:
+        Final attribute value after applying all bonuses
+
+    Raises:
+        KeyError: If the attribute doesn't exist on this character
+    """
+
+    if attribute_name not in self.attributes:
+        raise KeyError(f"Character '{self.name}' does not have attribute '{attribute_name}'")
+
+    # ... continues
+```
+
+Good:
+```python
+def calculate_effective_value(self, attribute_name: str) -> float:
+    attribute = self.attributes[attribute_name] # self will always have all attributes
+```
+
 
 ### Versioning
 
