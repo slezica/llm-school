@@ -45,6 +45,8 @@ Implementers prefer to work with the RED-GREEN-REFACTOR strategy for test-driven
 
 Decisions such as library and framework choices, project directory structure, location of files, names of components and modules, etc. are made by the architect and included in the plan.
 
+Also specify tooling used to manage dependencies, build, install the project, test it, etc.
+
 Only leave for implementers the decisions around how to write the code and tests that fulfill each step. Provide precise requirements.
 
 
