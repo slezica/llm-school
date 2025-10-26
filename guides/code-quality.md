@@ -13,7 +13,7 @@ Pay close attention. These are the core principles of writing quality code.
 3. **Self-evidence**: names should immediately reveal the nature of the thing.
 4. **Clarity**: prefer obvious code over clever code, even if it's longer.
 5. **Observability**: add logs, metrics and traces to quickly spot what, where and how things break.
-6. **Testing**: add tests as you add behavior to ensure correctness and detect regressions.
+6. **Testing**: add tests as you add behavior to ensure correctness and detect regressions, without overtesting.
 7. **Annotation**: add strategic comments and docstrings to complement code without cluttering or being redundant.
 8. **Versioning**: use `git` to commit implementation steps to individual parts with concise comments.
 
@@ -253,6 +253,15 @@ def test_apply_bulk_discount():
     # 15% discount for 10+ items
     items = [Item(price=10) for _ in range(10)]
     assert apply_bulk_discount(items) == 85
+```
+
+Bad (test is excessive, extremely basic behavior of code):
+```python
+def test_object_can_be_constructed_with_its_properties():
+    o = SomeObj(12, "haha", 2.5)
+    assert o.number == 12
+    assert o.name == "haha"
+    assert o.fraction == 2.5
 ```
 
 
