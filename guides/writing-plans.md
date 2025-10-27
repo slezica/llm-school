@@ -10,7 +10,7 @@ version: 2.0.0
 
 Solid implementation plans facilitate the task of implementers by providing a clear roadmap for them to follow. It's the job of architects to write these plans with the implementers in mind.
 
-Always assume the implementer reading your plan is a capable developer, but has zero context for the codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+Always assume the implementer reading your plan is a capable developer, but has zero context for the codebase. Document the architectural decisions and integration points they need to know. Trust implementers to determine implementation details. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
 
 ## Dividing Plans
@@ -28,7 +28,28 @@ It's possible that plans for low-complexity features are composed of a single ph
 
 ## Proportional Complexity
 
-An implementation plan should never be more complex than the feature it's implementing. Don't try to create extensive plans when smaller ones will do. There's nothing wrong with a single-phase plan without examples or snippets when the taskl is straightforward.
+An implementation plan should never be more complex than the feature it's implementing. Don't try to create extensive plans when smaller ones will do. There's nothing wrong with a single-phase plan without examples or snippets when the task is straightforward.
+
+
+## Plan Granularity
+
+Distinguish between architectural decisions and implementation details:
+
+**Architectural decisions** (include in plans):
+- Component hierarchy and data flow patterns
+- Library and framework choices
+- Module boundaries and integration contracts
+- File structure when it affects multiple phases
+
+**Implementation details** (leave to implementer):
+- Which specific hooks or utilities to use
+- Exact function signatures and interfaces (unless they're integration points between phases)
+- Internal component state management
+- Specific parameter names, debounce timings, page sizes, etc.
+
+Include code snippets and exact file paths only when they represent architectural decisions or integration contracts that multiple components depend on. Otherwise, describe what needs to happen and trust the implementer to determine how.
+
+**Example:** If Phase 1 creates an API hook that Phase 2 will extend, showing the hook's interface is architectural guidance—it's the contract between phases. But specifying every component's internal props or state shape is micromanagement (see the Complex Plan Example below).
 
 
 ## Preserving Plans
@@ -67,11 +88,11 @@ Plans are markdown files that follow this structure:
 
 ## Writing Tips
 
-- Be concise. Specific and detailed, yes, but without excessive prose.
+- Be concise. Specific and detailed for architecture, yes, but without excessive prose.
 - Provide context. The implementer doesn't have the larger context of the project.
 - Take care of naming and architecture. Choose the concepts and relations that make up the code yourself.
-- Refer to files by their exact location. Don't risk confusion or misalignment.
-- Don't micromanage. These are medium-to-high level concerns. The implementer is capable of covering the gaps.
+- Reference specific files only when architectural integration requires it, not for every step.
+- Don't micromanage. Don't specify which hooks to use, exact interface shapes, debounce timings, or other implementation details unless they're integration contracts between components or phases. The implementer is capable and will make good choices.
 
 
 # Simple Plan Example
@@ -141,23 +162,17 @@ Follow TDD: write failing test, implement to pass, refactor. Commit after each s
 
 **Steps:**
 
-1. Create search feature structure and route
-2. Write failing test for `SearchBar`, then implement with debounced input (300ms)
-3. Write failing test for API hook, then implement `useProductSearch`
+1. Create search feature structure in `src/features/search/` and add `/search` route
+2. Write failing test for `SearchBar`, then implement with debounced input
+3. Write failing test for search API hook, then implement
 4. Write failing test for `SearchResults`, then implement display with empty state
 5. Wire components together and verify end-to-end
 
 **Instructions:**
 
-For step 1, create:
-- `src/features/search/components/SearchBar.tsx`
-- `src/features/search/components/SearchResults.tsx`
-- `src/features/search/hooks/useProductSearch.ts`
-- `src/features/search/__tests__/` (test files)
+Reuse existing `ProductCard` component for displaying results.
 
-Add route `/search` to `src/App.tsx`.
-
-For step 3, implement `useProductSearch` with this interface:
+The search API hook must expose this interface (integration contract for Phase 2):
 ```typescript
 interface SearchResult {
   products: Product[];
@@ -169,8 +184,6 @@ interface SearchResult {
 function useProductSearch(query: string): SearchResult
 ```
 
-Reuse `ProductCard` from `src/features/products/components/ProductCard.tsx`.
-
 ---
 
 ## Phase 2: Filters & Pagination
@@ -179,36 +192,16 @@ Reuse `ProductCard` from `src/features/products/components/ProductCard.tsx`.
 
 **Steps:**
 
-1. Write failing test for `FilterPanel`, then implement with category checkboxes and price inputs
-2. Update `useProductSearch` to accept filters and page number
+1. Write failing test for `FilterPanel`, then implement with category checkboxes and price range inputs
+2. Update search API hook to accept filters and page number
 3. Write failing test for `Pagination`, then implement with prev/next and page numbers
-4. Sync all params to URL using `useSearchParams`
+4. Sync all search parameters to URL for shareable links
 
 **Instructions:**
 
-Create `src/features/search/components/FilterPanel.tsx` and `Pagination.tsx`.
+Filter by categories and price range. Sync query, filters, and page number to URL params.
 
-Define filter types in `src/features/search/types.ts`:
-```typescript
-interface FilterOptions {
-  categories: string[];
-  minPrice?: number;
-  maxPrice?: number;
-}
-
-interface SearchParams {
-  query: string;
-  filters: FilterOptions;
-  page: number;
-}
-```
-
-Update hook signature:
-```typescript
-function useProductSearch(params: SearchParams): SearchResult
-```
-
-URL params: `q`, `categories`, `minPrice`, `maxPrice`, `page`.
+Extend the `useProductSearch` hook to accept an object parameter with `query`, `filters`, and `page` fields. The `SearchResult` interface remains unchanged—this maintains the contract while adding flexibility.
 
 ## Report
 
