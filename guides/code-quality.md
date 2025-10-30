@@ -1,6 +1,6 @@
 ---
 topic: Code Quality
-trigger: Read before writing any code yourself. This is a fundamental guide.
+trigger: Read before designing architecture, specifying behavior, setting up new projects or writing code for any reason. This is a fundamental guide.
 version: 1.0.0
 ---
 
@@ -310,6 +310,22 @@ Good:
 ```python
 def calculate_effective_value(self, attribute_name: str) -> float:
     attribute = self.attributes[attribute_name] # self will always have all attributes
+```
+
+
+Bad:
+```python
+# Bad
+def calculate_total_price(item_list, tax_rate, discount=0):
+    """
+    Calculate total price.
+
+    Args:
+        item_list: List of items
+        tax_rate: the tax rate to apply  
+        discount: a discount, defaults to 0
+    """
+  ...
 ```
 
 
