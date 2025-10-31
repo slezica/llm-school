@@ -15,13 +15,11 @@ Always assume the implementer reading your plan is a capable developer, but has 
 
 ## Dividing Plans
 
-Good plans are divided in phases, which in turn are divided in steps.
+Good plans are divided into phases based on meaningful milestones. Each phase should deliver something complete and usable.
 
 Phases encompass the path between one milestone and the next. At the end of each phase, the project is in a usable state, all tests are passing, and something well-defined has been accomplished. Phases must be clear enough to be described in one sentence.
 
-Steps are more granular tasks within each phase that progressively advance to the next milestone. Individual steps are allowed to break tests, create temporal inconsistencies and employ ad-hoc code that will later be removed or replaced.
-
-Phases often map to feature branches, while steps often map to commits.
+**When to include steps:** Only when the implementation approach requires specific ordering or when there are non-obvious dependencies. Most phases don't need step-by-step breakdowns—trust implementers to determine their own path to the end state.
 
 It's possible that plans for low-complexity features are composed of a single phase. Don't add phases or steps to the plan in order to make it seem more extensive or complete when it's not necessary.
 
@@ -59,7 +57,7 @@ You MUST save your plans to a markdown file when done, located in the project `d
 
 ## Implementation Strategy
 
-Implementers prefer to work with the RED-GREEN-REFACTOR strategy for test-driven development. Bear this in mind when dividing phases into steps. The steps taken must correlate with tests that the implementers can write as they move along.
+Implementers prefer to work with the RED-GREEN-REFACTOR strategy for test-driven development. Focus on defining clear end states and integration contracts—implementers will determine the test sequence that gets them there.
 
 
 ## Decisions Included
@@ -81,9 +79,12 @@ Plans are markdown files that follow this structure:
 4. For each phase:
     1. Header naming the phase.
     2. Expected end-state of the phase, its milestone.
-    3. Bullet-points describing each internal step.
-    4. Additional instructions (if any), which can be general or for specific steps, including any examples or directions for the implementer.
+    3. Key requirements and constraints.
+    4. Integration contracts (message flows, interfaces, data structures that other phases depend on).
+    5. Steps (only if ordering is critical or dependencies are non-obvious).
 5. Additional instructions (if any) for the implementer's final report.
+
+**Focus on contracts, not tasks.** Define what components need to agree on (APIs, message formats, interfaces), not how implementers should structure their work.
 
 
 ## Writing Tips
@@ -115,14 +116,12 @@ Add a "Copy" button to all code blocks in the documentation viewer. Currently us
 
 ## Phase 1: Copy Button Implementation
 
-**End state:** All code blocks have a copy button. Tests passing.
+**End state:** All code blocks have a copy button with working clipboard functionality. Tests passing.
 
-**Steps:**
-
-1. Write failing test for copy button visibility and click behavior
-2. Add button to `CodeBlock` with clipboard functionality
-3. Add hover state styling and success feedback
-4. Verify in docs viewer
+**Key requirements:**
+- Button visible on hover only
+- Success feedback displays for 2 seconds after copy
+- Works with all existing code block variants
 ~~~
 
 
@@ -145,34 +144,20 @@ We're adding search functionality to the product catalog. Currently users can on
 - Results per page: 20 items
 - Reuse existing `ProductCard` component and `useApiQuery` hook
 
+**Testing:** Follow TDD throughout. All tests passing at end of each phase.
+
 ## Phases
 
-1. **Basic Search** - Users can search products and see results
-2. **Filters & Pagination** - Users can filter and navigate pages
+### Phase 1: Basic Search
+Users can search products and see results.
 
-## Instructions
+**Key requirements:**
+- Search input with debounced queries
+- Results display using existing `ProductCard` component
+- Loading and empty states
+- Route at `/search`
 
-Follow TDD: write failing test, implement to pass, refactor. Commit after each step.
-
----
-
-## Phase 1: Basic Search
-
-**End state:** Users can type a query and see matching products. All tests passing.
-
-**Steps:**
-
-1. Create search feature structure in `src/features/search/` and add `/search` route
-2. Write failing test for `SearchBar`, then implement with debounced input
-3. Write failing test for search API hook, then implement
-4. Write failing test for `SearchResults`, then implement display with empty state
-5. Wire components together and verify end-to-end
-
-**Instructions:**
-
-Reuse existing `ProductCard` component for displaying results.
-
-The search API hook must expose this interface (integration contract for Phase 2):
+**Integration contract for Phase 2:**
 ```typescript
 interface SearchResult {
   products: Product[];
@@ -186,25 +171,17 @@ function useProductSearch(query: string): SearchResult
 
 ---
 
-## Phase 2: Filters & Pagination
+### Phase 2: Filters & Pagination
+Users can filter by category/price and navigate result pages.
 
-**End state:** Users can filter by category/price and navigate pages. All tests passing.
+**Key requirements:**
+- Filter panel with category checkboxes and price range
+- Pagination with prev/next and page numbers
+- All parameters (query, filters, page) synced to URL for shareable links
 
-**Steps:**
+**Contract changes:**
+Extend `useProductSearch` to accept object parameter with `query`, `filters`, and `page` fields. The `SearchResult` interface remains unchanged.
 
-1. Write failing test for `FilterPanel`, then implement with category checkboxes and price range inputs
-2. Update search API hook to accept filters and page number
-3. Write failing test for `Pagination`, then implement with prev/next and page numbers
-4. Sync all search parameters to URL for shareable links
-
-**Instructions:**
-
-Filter by categories and price range. Sync query, filters, and page number to URL params.
-
-Extend the `useProductSearch` hook to accept an object parameter with `query`, `filters`, and `page` fields. The `SearchResult` interface remains unchanged—this maintains the contract while adding flexibility.
-
-## Report
-
-Provide: summary of task completion, test coverage report, any deviations in methodology or in details of the plan you were forced to adapt.
+**Error handling:** Handle empty results, API failures, and invalid filter combinations.
 ~~~
 
