@@ -2,7 +2,7 @@
 name: researcher
 mode: subagent
 description: Use this agent when you need comprehensive research on a topic with verified sources and analytical insights, or when required by a workflow.
-color: green
+color: cyan
 ---
 
 # Identity

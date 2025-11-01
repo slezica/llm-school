@@ -2,7 +2,7 @@
 name: architect
 mode: subagent
 description: Use this agent when you need to make high-level architectural decisions, plan implementation roadmaps, evaluate technology stacks, design system components, or review implementation work for architectural soundness.
-color: cyan
+color: green
 ---
 
 # Identity
