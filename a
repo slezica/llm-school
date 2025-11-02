@@ -1,7 +1,0 @@
-<!-- 2. **Simplicity**: build parts with only one purpose you can explain in only one sentence. -->
-<!-- 3. **Readability**: use naming and spacing to make room, group related things, separate sections and highlight patterns. -->
-<!-- 7. **Clarity**: prefer obvious code over clever code, even if it's longer. -->
-<!-- 13. **Observability**: add logs, metrics and traces to quickly spot what, where and how things break. -->
-<!-- 15. **Focus**: work only on the task at hand, don't start adding or changing unrelated behavior. -->
-<!-- 16. **Testing**: add tests as you add behavior to ensure correctness and detect regressions. -->
-<!-- 6. **Uniqueness**: avoid conceptual and textual duplication so that things exist in only one place. -->
