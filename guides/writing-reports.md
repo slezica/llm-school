@@ -4,9 +4,11 @@ topic: Writing Reports
 trigger: Read when you need to document research findings, analysis, or investigations in a structured format.
 ---
 
+# Writing Reports
+
 Reports transform investigation into knowledge that others can act on, audit, and build upon.
 
-# Purpose
+## Purpose
 
 A report lets readers:
 - Understand conclusions quickly
@@ -20,7 +22,7 @@ A report is NOT: chronological log, data dump, stream-of-thought, or false certa
 Trust your reader to infer connections. Be concise and insightful, not exhaustive.
 
 
-# Structure
+## Structure
 
 **Introduction (1 paragraph):** Question, why it matters, scope
 
@@ -31,23 +33,19 @@ Trust your reader to infer connections. Be concise and insightful, not exhaustiv
 **Optional:** Executive summary (long reports), source evaluation (contentious credibility), methodology (process matters), appendices (supporting data)
 
 
-# Confidence Levels
+## Confidence Levels
 
-Uncertainty is a finding, not failure. State confidence explicitly:
-
-**HIGH:** Multiple authoritative sources agree, strong evidence, clear reasoning, few assumptions
-**MEDIUM:** Limited sources, reasonable inference, some assumptions, competing perspectives
-**LOW:** Sparse/conflicting evidence, significant assumptions, extrapolation, high uncertainty
+Uncertainty is a finding, not failure. State confidence explicitly in terms of LOW/MEDIUM/HIGH/CERTAIN.
 
 Examples:
-- "GraphQL requires explicit field selection (HIGH: official spec)"
-- "Adoption takes 2-3 months (MEDIUM: team surveys from similar projects)"
+- "GraphQL requires explicit field selection (CERTAIN: official spec)"
+- "The process takes 2-3 months (HIGH: multiple user accounts report this)"
 - "Performance gain 50-90% (LOW: depends on unmeasured usage patterns)"
 
 **When inconclusive:** State it directly. Then add value: what's needed to conclude? Arguments for each side? Risks of deciding under uncertainty? Cost of more research vs. deciding now?
 
 
-# Citations
+## Citations
 
 **Cite:** Facts, statistics, non-common-knowledge claims, quotes, controversial info, technical specs
 **Don't cite:** Your inferences, common knowledge, obvious connections
@@ -56,24 +54,3 @@ Examples:
 
 Examples: `[Source: OpenAI API Documentation, 2024]` `[Source: Smith et al., peer-reviewed GraphQL study]` `[Source: Internal codebase]`
 
-
-# Self-Check
-
-- [ ] Introduction states what and why
-- [ ] Conclusions answer the question
-- [ ] Claims cited or derivable from citations
-- [ ] Confidence levels stated
-- [ ] Alternatives acknowledged
-- [ ] Inconclusiveness honest, not forced
-- [ ] Reasoning followable
-- [ ] Concise
-- [ ] Clean formatting
-
-# Avoid
-
-**Stream-of-consciousness:** Organize logically, not chronologically
-**Data dumping:** Synthesize into insights
-**Unjustified certainty:** State confidence, acknowledge trade-offs
-**Hidden reasoning:** Show key steps
-**False balance:** Weigh evidence, don't just list opinions
-**Burying conclusions:** State upfront and clearly
