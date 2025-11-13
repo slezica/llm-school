@@ -1,10 +1,10 @@
 ---
-topic: Code Quality
-trigger: Read before designing architecture, specifying behavior, setting up new projects or writing code for any reason. This is a fundamental guide.
+topic: Writing Code
+trigger: Read before designing architecture, specifying behavior, setting up new projects or writing code yourself (i.e. when not delegating to an agent). This is a fundamental guide.
 version: 1.0.0
 ---
 
-# Code Quality
+# Writing Code
 
 Pay close attention. These are the core principles of writing quality code.
 

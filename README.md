@@ -39,7 +39,7 @@ You can explicitly instruct the AI to deploy agents or read specific guides duri
 - **Effective Communication** - Clear, concise communication
 - **Effective Collaboration** - Working effectively with users
 - **Design Philosophy** - Principles for good software design
-- **Code Quality** - Writing clean, maintainable code
+- **Writing Code** - Writing clean, maintainable code
 - **Writing Plans** - Creating effective implementation roadmaps
 - **Executing Plans** - Implementing planned solutions
 - **Following Plans** - Executing detailed implementation plans
