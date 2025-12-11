@@ -22,7 +22,7 @@ Plans are sequence of phases, each of which can be treated as a feature implemen
 
 1. **Implement phase.** Follow the `implementing-complex-features` workflow (which handles implementation, and review of each phase internally).
 
-3. **Checkpoint.** After the phase is implemented, review the newly added commits and ponder what to do next: continue to the next phase, or modify plans. Give your recommendation to the user.
+3. **Checkpoint.** After the phase is implemented, review the newly added commits and ask the user whether to continue to the next phase, or do something else. Give your recommendation, and await instructions.
 
 When the workflow requires adaptation, inform the user with your rationale.
 
