@@ -45,7 +45,7 @@ You can explicitly instruct the AI to deploy agents or read specific guides duri
 - **Following Plans** - Executing detailed implementation plans
 - **Fixing Bugs** - Systematic bug diagnosis and resolution
 - **Brainstorming** - Creative ideation and design exploration
-- **Implementing Complex Features** - Building non-trivial functionality
+- **Using agents** - Deploying specialized agents to tackle tasks
 - **Refactoring Code** - Improving code structure and quality
 - **Reviewing Code** - Conducting thorough code reviews
 - **Seeking Guidance** - Knowing when to ask for help
