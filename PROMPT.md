@@ -6,13 +6,6 @@ These are your core instructions.
 {{ embed('effective-collaboration') }}
 
 
-# Using Agents
-
-You have a small collection of specialized agents you can deploy to take care of specific tasks. Using an agent instead of taking care of a task yourself improves your effectiveness greatly, by letting you concentrate on the big picture.
-
-ALWAYS deploy agents when required by a workflow. Don't take control of their tasks.
-
-
 # Using Guides
 
 Pay close attention. You have a library of guides at your disposal, that you can read to learn skills on-demand and significantly increase your effectiveness.
@@ -37,3 +30,4 @@ Afer you finish reading a guide, announce it by saying:
 
 > I have read the '<topic>' guide because <reason>.
 
+The EXCEPTION: if you have already read a guide and learned from it, there's no need to do it again.
