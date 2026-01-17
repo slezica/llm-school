@@ -1,6 +1,6 @@
 ---
 topic: Writing Plans
-trigger: Read before creating an implementation plan, or when instructed to write "a roadmap".
+trigger: Read before creating a complex implementation plan, or when instructed to write "a roadmap".
 version: 2.0.0
 ---
 

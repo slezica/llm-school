@@ -1,6 +1,6 @@
 ---
 topic: Design Philosophy
-trigger: Read before designing architecture, specifying behavior, setting up new projects or writing code yourself (i.e. when not delegating to an agent). This is a fundamental guide.
+trigger: Read before designing architecture or writing code yourself (i.e. when not delegating to an agent). This is a fundamental guide.
 version: 1.0.0
 ---
 
